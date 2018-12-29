@@ -26,6 +26,8 @@ public class MainWindow implements ActionListener {
 	private JSeparator separator;
 	private JList<PlaylistEntry> lstPlaylist;
 	private Playlist pl;
+	private boolean unsavedChanges = true;
+	private String currentFile;
 
 	/**
 	 * Launch the application.
@@ -60,7 +62,7 @@ public class MainWindow implements ActionListener {
 	private void initialize() {
 		
 		frame = new JFrame();
-		frame.setTitle("untitled - PlaylistEditor");
+		frame.setTitle("untitled* - PlaylistEditor");
 		frame.setBounds(100, 100, 650, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout());
@@ -109,6 +111,14 @@ public class MainWindow implements ActionListener {
 //		}
 	}
 
+	private void updateWindowTitle() {
+		if (unsavedChanges) {
+			frame.setTitle(currentFile + "* - PlaylistEditor");
+		} else {
+			frame.setTitle(currentFile + " - PlaylistEditor");
+		}
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent action) {
 		switch (action.getActionCommand()) {
@@ -119,7 +129,9 @@ public class MainWindow implements ActionListener {
 			if (file == null) {
 				return;
 			}
-			frame.setTitle(file.getName() + " - PlaylistEditor");
+			currentFile = file.getName();
+			unsavedChanges = false;
+			updateWindowTitle();
 			pl.removeAll();
 			pl.load(file.getPath());
 			break;
@@ -129,16 +141,21 @@ public class MainWindow implements ActionListener {
 			if (ret == JFileChooser.APPROVE_OPTION) {
 				File files = fcs.getSelectedFile();
 				pl.saveToFile(files);
-				frame.setTitle(files.getName() + " - PlaylistEditor");
+				currentFile = files.getName();
+				unsavedChanges = false;
+				updateWindowTitle();
 			}
 			break;
 		case "removeEntry":
 			pl.remove(lstPlaylist.getSelectedValue());
-//			model.removeElement(lstPlaylist.getSelectedValue());
+			unsavedChanges = true;
+			updateWindowTitle();
 			break;
 		case "addEntry":
 			PlaylistEntry entry = new PlaylistEntry();
 			pl.add(entry);
+			unsavedChanges = true;
+			updateWindowTitle();
 			break;
 		case "editEntry":
 			PlaylistEntry selectedEntry = lstPlaylist.getSelectedValue();
@@ -146,8 +163,8 @@ public class MainWindow implements ActionListener {
 			EditEntryDialog dialog = new EditEntryDialog(frame);
 			selectedEntry = dialog.showDialog(selectedEntry);
 			pl.update(selectedEntry, selectedIndex);
-			System.out.println("DIALOG CLOSED");
-			
+			unsavedChanges = true;
+			updateWindowTitle();
 			break;
 		default:
 			break;
