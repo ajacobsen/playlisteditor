@@ -3,6 +3,7 @@ package atze.plsedit;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -87,9 +88,10 @@ public class OverlayPanel extends JPanel implements ActionListener {
 
 		case "openFile":
 			JFileChooser fc = new JFileChooser();
+			fc.setFileFilter(new FileNameExtensionFilter("Overlay video (.mov)", "mov"));
 			int ret = fc.showOpenDialog(this);
 			if (ret == JFileChooser.APPROVE_OPTION) {
-				txtFile.setText(fc.getSelectedFile().getPath());
+				txtFile.setText(fc.getSelectedFile().getName());
 			}
 			break;
 			

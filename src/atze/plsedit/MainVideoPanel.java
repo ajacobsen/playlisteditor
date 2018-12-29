@@ -3,6 +3,7 @@ package atze.plsedit;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -149,17 +150,19 @@ public class MainVideoPanel extends JPanel implements ActionListener {
 		switch (e.getActionCommand()) {
 		case "openVideoFile":
 			JFileChooser fco = new JFileChooser();
+			fco.setFileFilter(new FileNameExtensionFilter("Video (mp4)", "mp4"));
 			int ret = fco.showOpenDialog(this);
 			if (ret == JFileChooser.APPROVE_OPTION) {
-				txtFile.setText(fco.getSelectedFile().getPath());
+				txtFile.setText(fco.getSelectedFile().getName());
 			}
 			break;
 		
 		case "openLogoFile":
 			JFileChooser fc = new JFileChooser();
+			fc.setFileFilter(new FileNameExtensionFilter("Logo (png)", "png"));
 			int reto = fc.showOpenDialog(this);
 			if (reto == JFileChooser.APPROVE_OPTION) {
-				txtLogoFile.setText(fc.getSelectedFile().getPath());
+				txtLogoFile.setText(fc.getSelectedFile().getName());
 			}
 			break;
 			

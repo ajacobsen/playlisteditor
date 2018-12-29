@@ -13,6 +13,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JSeparator;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class MainWindow implements ActionListener {
 
@@ -124,6 +126,7 @@ public class MainWindow implements ActionListener {
 		switch (action.getActionCommand()) {
 		case "openPl":
 			JFileChooser fc = new JFileChooser();
+			fc.setFileFilter(new FileNameExtensionFilter("Playlist (.json)", "json"));
 			fc.showOpenDialog(frame);
 			File file = fc.getSelectedFile();
 			if (file == null) {
@@ -137,6 +140,7 @@ public class MainWindow implements ActionListener {
 			break;
 		case "savePl":
 			JFileChooser fcs = new JFileChooser();
+			fcs.setFileFilter(new FileNameExtensionFilter("Playlist (.json)", "json"));
 			int ret = fcs.showSaveDialog(frame);
 			if (ret == JFileChooser.APPROVE_OPTION) {
 				File files = fcs.getSelectedFile();
