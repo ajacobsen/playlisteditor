@@ -129,6 +129,7 @@ public class MainWindow implements ActionListener {
 			if (ret == JFileChooser.APPROVE_OPTION) {
 				File files = fcs.getSelectedFile();
 				pl.saveToFile(files);
+				frame.setTitle(files.getName() + " - PlaylistEditor");
 			}
 			break;
 		case "removeEntry":
